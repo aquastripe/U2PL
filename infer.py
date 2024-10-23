@@ -100,6 +100,7 @@ def main():
     cfg["net"]["sync_bn"] = False
     model = ModelBuilder(cfg["net"])
     checkpoint = torch.load(args.model_path)
+    checkpoint = {'model_state': checkpoint}
     key = "teacher_state" if "teacher_state" in checkpoint.keys() else "model_state"
     logger.info(f"=> load checkpoint[{key}]")
 
@@ -130,6 +131,7 @@ def main():
         color_mask = Image.fromarray(colorful(mask, colormap))
         color_mask.save(os.path.join(color_folder, image_name))
 
+        mask = mask.astype(np.uint8)
         mask = Image.fromarray(mask)
         mask.save(os.path.join(gray_folder, image_name))
 
